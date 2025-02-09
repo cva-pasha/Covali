@@ -17,6 +17,11 @@ public enum Currency : ushort
     ALL = 008,
 
     /// <summary>
+    /// Argentine Peso.
+    /// </summary>
+    ARS = 032,
+    
+    /// <summary>
     /// Australian Dollar.
     /// </summary>
     AUD = 036,
@@ -105,6 +110,16 @@ public enum Currency : ushort
     /// Moldovan leu.
     /// </summary>
     MDL = 498,
+    
+    /// <summary>
+    /// Netherlands Antillean Guilder.
+    /// </summary>
+    ANG = 532,
+    
+    /// <summary>
+    /// Aruban Florin.
+    /// </summary>
+    AWG = 533,
 
     /// <summary>
     /// New Zealand Dollar.
@@ -140,6 +155,11 @@ public enum Currency : ushort
     /// Macedonian denar.
     /// </summary>
     MKD = 807,
+    
+    /// <summary>
+    /// Egyptian Pound.
+    /// </summary>
+    EGP = 818,
 
     /// <summary>
     /// Pound Sterling.
@@ -192,9 +212,19 @@ public enum Currency : ushort
     XDR = 960,
 
     /// <summary>
+    /// Afghan Afghani.
+    /// </summary>
+    AFN = 971,
+    
+    /// <summary>
     /// Tajikistan Somoni.
     /// </summary>
     TJS = 972,
+    
+    /// <summary>
+    /// Angolan Kwanza.
+    /// </summary>
+    AOA = 973,
 
     /// <summary>
     /// Bulgarian Lev.
