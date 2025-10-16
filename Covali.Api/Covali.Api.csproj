@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
+        <NoWarn>S4136;S2223</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
-        <Title>Covali.Enums</Title>
-        <PackageId>Covali.Enums</PackageId>
-        <PackageProjectUrl>https://www.nuget.org/packages/Covali.Enums</PackageProjectUrl>
+        <Title>Covali.Api</Title>
+        <PackageId>Covali.Api</PackageId>
+        <PackageProjectUrl>https://www.nuget.org/packages/Covali.Api</PackageProjectUrl>
 
         <Version>9.0.0</Version>
         <Description>Simplifies implementation of minimal api endpoints.</Description>
@@ -22,15 +23,15 @@
         <LicenseUrl>https://github.com/cva-pasha/Covali/blob/main/LICENSE.txt</LicenseUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageType>Dependency</PackageType>
-        <PackageTags>Covali;Enums;Currency;</PackageTags>
+        <PackageTags>Covali;Endpoints;Api;Http;Rest</PackageTags>
     </PropertyGroup>
-    
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
-        <None Include="..\README.md">
-            <Pack>True</Pack>
-            <PackagePath>\</PackagePath>
-            <Link>README.md</Link>
-        </None>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
 </Project>
