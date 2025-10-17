@@ -4,7 +4,6 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <NoWarn>S4136;S2223</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -22,6 +21,8 @@
         <Copyright>Copyright (c) 2025 cva_pasha</Copyright>
         <LicenseUrl>https://github.com/cva-pasha/Covali/blob/main/LICENSE.txt</LicenseUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>cva_pasha_nfc.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageType>Dependency</PackageType>
         <PackageTags>Covali;Endpoints;Api;Http;Rest</PackageTags>
     </PropertyGroup>
@@ -33,5 +34,19 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\cva_pasha_nfc.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+            <Link>README.md</Link>
+        </None>
+        <None Include="README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+            <Link>README.md</Link>
+        </None>
+    </ItemGroup>
+
 
 </Project>

@@ -12,7 +12,7 @@
         <PackageProjectUrl>https://www.nuget.org/packages/Covali.Enums</PackageProjectUrl>
 
         <Version>9.0.0</Version>
-        <Description>Simplifies implementation of minimal api endpoints.</Description>
+        <Description>Defines common enumerations used across Covali projects.</Description>
 
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/cva-pasha/Covali</RepositoryUrl>
@@ -21,12 +21,23 @@
         <Copyright>Copyright (c) 2025 cva_pasha</Copyright>
         <LicenseUrl>https://github.com/cva-pasha/Covali/blob/main/LICENSE.txt</LicenseUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>cva_pasha_nfc.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageType>Dependency</PackageType>
         <PackageTags>Covali;Enums;Currency;</PackageTags>
     </PropertyGroup>
-    
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
-        <None Include="..\README.md">
+        <None Include="..\cva_pasha_nfc.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+            <Link>README.md</Link>
+        </None>
+        <None Include="README.md">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
             <Link>README.md</Link>
