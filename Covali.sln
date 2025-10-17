@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Covali.EventSourcing.Extens
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Covali.EventSourcing.Tests.Unit", "Covali.EventSourcing\Covali.EventSourcing.Tests.Unit\Covali.EventSourcing.Tests.Unit.csproj", "{0814951F-12AC-4D40-A8D2-08AD50643000}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Covali.EventSourcing.Api", "Covali.EventSourcing\Covali.EventSourcing.Api\Covali.EventSourcing.Api.csproj", "{D3F7C0C2-72A9-4664-9EE6-414A62A4F3A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{0814951F-12AC-4D40-A8D2-08AD50643000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0814951F-12AC-4D40-A8D2-08AD50643000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0814951F-12AC-4D40-A8D2-08AD50643000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3F7C0C2-72A9-4664-9EE6-414A62A4F3A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3F7C0C2-72A9-4664-9EE6-414A62A4F3A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3F7C0C2-72A9-4664-9EE6-414A62A4F3A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3F7C0C2-72A9-4664-9EE6-414A62A4F3A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +72,6 @@ Global
 		{92307F67-E592-46D5-A919-DD1A4D177745} = {5D2DB627-79AB-4C6E-8F6C-06EBA56FF2D5}
 		{69B6D7E9-CE51-41E9-87F2-EA708D541BB9} = {5D2DB627-79AB-4C6E-8F6C-06EBA56FF2D5}
 		{0814951F-12AC-4D40-A8D2-08AD50643000} = {5D2DB627-79AB-4C6E-8F6C-06EBA56FF2D5}
+		{D3F7C0C2-72A9-4664-9EE6-414A62A4F3A2} = {5D2DB627-79AB-4C6E-8F6C-06EBA56FF2D5}
 	EndGlobalSection
 EndGlobal

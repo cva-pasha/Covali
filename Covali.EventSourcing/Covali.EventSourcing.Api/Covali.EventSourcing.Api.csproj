@@ -1,15 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <NoWarn>S4136;S2223</NoWarn>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Covali.EventSourcing.Extensions\Covali.EventSourcing.Extensions.csproj">
-          <Project>{94e42450-60a3-4791-964e-d860829f410d}</Project>
-          <Name>Covali.EventSourcing.Extensions</Name>
-        </ProjectReference>
+        <ProjectReference Include="..\Covali.EventSourcing.Extensions\Covali.EventSourcing.Extensions.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using EventSourcing.Commands;
+﻿using Covali.EventSourcing.Commands;
 
 namespace Covali.EventSourcing.Api.Commands;
 
@@ -10,7 +10,10 @@ internal sealed class FireAndForgetCommandHandler(
     ILogger<FireAndForgetCommandHandler> logger
 ) : ICommandHandler<FireAndForgetCommand>
 {
-    public async Task HandleAsync(FireAndForgetCommand command, CancellationToken ct = default)
+    public async Task HandleAsync(
+        FireAndForgetCommand command,
+        CancellationToken ct = default
+    )
     {
         await Task.Delay(millisecondsDelay: 2000, ct);
         logger.LogInformation(message: "Background task for FireAndForgetCommand with number {Number} completed.", command.Number);

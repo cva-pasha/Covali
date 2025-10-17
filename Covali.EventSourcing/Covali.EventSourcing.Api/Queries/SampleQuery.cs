@@ -1,5 +1,5 @@
 ﻿using Covali.EventSourcing.Api.Models;
-using EventSourcing.Queries;
+using Covali.EventSourcing.Queries;
 
 namespace Covali.EventSourcing.Api.Queries;
 
@@ -12,7 +12,10 @@ internal sealed class SampleQueryHandler(
 )
     : IQueryHandler<SampleQuery, BaseResult>
 {
-    public Task<BaseResult> HandleAsync(SampleQuery query, CancellationToken ct = default)
+    public Task<BaseResult> HandleAsync(
+        SampleQuery query,
+        CancellationToken ct = default
+    )
     {
         var message = $"{nameof(SampleQueryHandler)} with number: {query.Number} handled at {DateTime.Now:HH:mm:ss.fff}";
         logger.LogInformation(message);
@@ -25,7 +28,10 @@ internal sealed class AnotherSampleQueryHandler(
 )
     : IQueryHandler<SampleQuery, BaseResult>
 {
-    public Task<BaseResult> HandleAsync(SampleQuery query, CancellationToken ct = default)
+    public Task<BaseResult> HandleAsync(
+        SampleQuery query,
+        CancellationToken ct = default
+    )
     {
         var message = $"{nameof(AnotherSampleQueryHandler)} with number: {query.Number} handled at {DateTime.Now:HH:mm:ss.fff}";
         logger.LogInformation(message);

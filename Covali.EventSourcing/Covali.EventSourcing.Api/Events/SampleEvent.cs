@@ -1,4 +1,4 @@
-﻿using EventSourcing.Events;
+﻿using Covali.EventSourcing.Events;
 
 namespace Covali.EventSourcing.Api.Events;
 

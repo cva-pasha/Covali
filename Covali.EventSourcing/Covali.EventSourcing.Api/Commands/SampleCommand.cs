@@ -1,5 +1,5 @@
 ﻿using Covali.EventSourcing.Api.Models;
-using EventSourcing.Commands;
+using Covali.EventSourcing.Commands;
 
 namespace Covali.EventSourcing.Api.Commands;
 
@@ -12,7 +12,10 @@ internal sealed class SampleCommandHandler(
 )
     : ICommandHandler<SampleCommand, BaseResult>
 {
-    public Task<BaseResult> HandleAsync(SampleCommand command, CancellationToken ct = default)
+    public Task<BaseResult> HandleAsync(
+        SampleCommand command,
+        CancellationToken ct = default
+    )
     {
         var message = $"{nameof(SampleCommandHandler)} with number: {command.Number} handled at {DateTime.Now:HH:mm:ss.fff}";
         logger.LogInformation(message);
@@ -25,7 +28,10 @@ internal sealed class AnotherSampleCommandHandler(
 )
     : ICommandHandler<SampleCommand, BaseResult>
 {
-    public Task<BaseResult> HandleAsync(SampleCommand command, CancellationToken ct = default)
+    public Task<BaseResult> HandleAsync(
+        SampleCommand command,
+        CancellationToken ct = default
+    )
     {
         var message = $"{nameof(AnotherSampleCommandHandler)} with number: {command.Number} handled at {DateTime.Now:HH:mm:ss.fff}";
         logger.LogInformation(message);

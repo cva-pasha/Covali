@@ -1,5 +1,5 @@
 ﻿using Covali.EventSourcing.Api.Models;
-using EventSourcing.Commands.Concurrent;
+using Covali.EventSourcing.Commands.Concurrent;
 
 namespace Covali.EventSourcing.Api.Commands;
 
