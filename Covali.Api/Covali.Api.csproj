@@ -39,12 +39,10 @@
         <None Include="..\cva_pasha_nfc.png">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
-            <Link>cva_pasha_nfc.png</Link>
         </None>
         <None Include="README.md">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
-            <Link>README.md</Link>
         </None>
     </ItemGroup>
 
