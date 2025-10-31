@@ -5,6 +5,10 @@ namespace Covali.EventSourcing.Events;
 /// </summary>
 /// <remarks>
 /// <para>
+/// <strong>Important:</strong> You must extend <see cref="EventMetadata"/> with a partial class
+/// before using this class. The core <c>EventMetadata</c> class is intentionally empty.
+/// </para>
+/// <para>
 /// <strong>When to Use:</strong>
 /// </para>
 /// <list type="bullet">
@@ -43,6 +47,19 @@ namespace Covali.EventSourcing.Events;
 /// </para>
 /// </remarks>
 /// <example>
+/// First, extend EventMetadata with your own structure:
+/// <code>
+/// namespace Covali.EventSourcing.Events;
+///
+/// public partial class EventMetadata
+/// {
+///     public required string EventCode { get; init; }
+///     public required string DisplayName { get; init; }
+///     public required string Description { get; init; }
+///     public required HashSet&lt;string&gt; PlaceholderKeys { get; init; }
+/// }
+/// </code>
+/// Then create events using your metadata:
 /// <code>
 /// public sealed record UserRegisteredEvent : EventWithMetadata
 /// {
@@ -51,7 +68,7 @@ namespace Covali.EventSourcing.Events;
 ///     public required string Email { get; init; }
 ///     public required string FirstName { get; init; }
 ///
-///     // Metadata implementation
+///     // Metadata implementation (uses your partial class definition)
 ///     public override EventMetadata GetMetadata() => new()
 ///     {
 ///         EventCode = "Identity.UserRegistered",
@@ -67,10 +84,12 @@ public abstract class EventWithMetadata : IEvent
     /// <summary>
     /// Gets the metadata for this event.
     /// </summary>
-    /// <returns>Event metadata containing event code, display name, description, category, and placeholder keys.</returns>
+    /// <returns>Event metadata containing properties defined in your partial class extension.</returns>
     /// <remarks>
     /// <para>
-    /// Override this method to provide event-specific metadata. The metadata is used by:
+    /// Override this method to provide event-specific metadata. The metadata structure
+    /// is determined by your partial class definition of <see cref="EventMetadata"/>.
+    /// The metadata is used by:
     /// <list type="bullet">
     ///   <item><description>Event handlers to determine how to process the event</description></item>
     ///   <item><description>Notification systems to route and render messages</description></item>

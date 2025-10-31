@@ -6,23 +6,15 @@ namespace Covali.EventSourcing.Tests.Unit;
 public class EventMetadataTests
 {
     [Fact]
-    public void EventMetadata_CanBeCreatedWithRequiredProperties()
+    public void EventMetadata_CanBeExtendedWithPartialClass()
     {
         // Arrange & Act
-        var metadata = new EventMetadata
-        {
-            EventCode = "Test.EventOccurred",
-            DisplayName = "Test Event",
-            Description = "A test event for unit testing",
-            PlaceholderKeys = ["Key1", "Key2"]
-        };
+        // EventMetadata is empty by design, allowing developers to extend it
+        // This test verifies that EventMetadata can be instantiated
+        var metadata = new EventMetadata();
 
         // Assert
-        Assert.Equal("Test.EventOccurred", metadata.EventCode);
-        Assert.Equal("Test Event", metadata.DisplayName);
-        Assert.Equal("A test event for unit testing", metadata.Description);
-        Assert.Contains("Key1", metadata.PlaceholderKeys);
-        Assert.Contains("Key2", metadata.PlaceholderKeys);
+        Assert.NotNull(metadata);
     }
 
     [Fact]
@@ -38,8 +30,7 @@ public class EventMetadataTests
         var metadata = testEvent.GetMetadata();
 
         // Assert
-        Assert.Equal("Test.EventOccurred", metadata.EventCode);
-        Assert.Equal("Test Event Occurred", metadata.DisplayName);
+        Assert.NotNull(metadata);
     }
 
     [Fact]
@@ -56,12 +47,6 @@ public class EventMetadataTests
     {
         public required string TestData { get; init; }
 
-        public override EventMetadata GetMetadata() => new()
-        {
-            EventCode = "Test.EventOccurred",
-            DisplayName = "Test Event Occurred",
-            Description = "Test event for unit testing",
-            PlaceholderKeys = ["TestData"]
-        };
+        public override EventMetadata GetMetadata() => new();
     }
 }

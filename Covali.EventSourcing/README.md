@@ -102,6 +102,8 @@ public record GetUserByIdQuery(string Id) : IQuery<User>;
 
 Events can optionally provide rich metadata for cross-cutting concerns like notifications, analytics, and logging.
 
+**Note**: `EventMetadata` is intentionally empty in the core package. You must extend it with a partial class to define your own metadata structure.
+
 ### Basic Event (Lightweight)
 
 ```csharp
@@ -111,7 +113,40 @@ public record SimpleEvent : IEvent
 }
 ```
 
+### Extending Metadata (Partial Classes)
+
+First, extend `EventMetadata` with your own properties:
+
+```csharp
+// In your application or module
+namespace Covali.EventSourcing.Events;
+
+public partial class EventMetadata
+{
+    public required string EventCode { get; init; }
+    public required string DisplayName { get; init; }
+    public required string Description { get; init; }
+    public required HashSet<string> PlaceholderKeys { get; init; }
+}
+```
+
+Or use a different structure that fits your needs:
+
+```csharp
+// Alternative: enum-based approach
+namespace Covali.EventSourcing.Events;
+
+public partial class EventMetadata
+{
+    public required EventTypeCode Code { get; init; }
+    public required NotificationPriority Priority { get; init; }
+    public required HashSet<NotificationChannel> Channels { get; init; }
+}
+```
+
 ### Event with Metadata (Feature-Rich)
+
+Once you've defined your metadata structure, use it in events:
 
 ```csharp
 public sealed record UserRegisteredEvent : EventWithMetadata
@@ -120,7 +155,7 @@ public sealed record UserRegisteredEvent : EventWithMetadata
     public required string UserId { get; init; }
     public required string Email { get; init; }
 
-    // Metadata
+    // Metadata implementation (based on your partial class definition)
     public override EventMetadata GetMetadata() => new()
     {
         EventCode = "Identity.UserRegistered",
@@ -128,21 +163,6 @@ public sealed record UserRegisteredEvent : EventWithMetadata
         Description = "New user registration",
         PlaceholderKeys = ["UserId", "Email"]
     };
-}
-```
-
-### Extending Metadata (Partial Classes)
-
-Modules can extend `EventMetadata` with domain-specific properties:
-
-```csharp
-// In your Notifications module
-namespace Covali.EventSourcing.Events;
-
-public partial class EventMetadata
-{
-    public string? NotificationChannel { get; init; }
-    public int Priority { get; init; }
 }
 ```
 
