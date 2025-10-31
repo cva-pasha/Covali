@@ -181,10 +181,40 @@ public class NotificationHandler : IEventHandler<EventWithMetadata>
 }
 ```
 
-This handler is automatically registered and called for ALL events inheriting from `EventWithMetadata`.
+This handler is automatically registered and called for **ALL events** inheriting from `EventWithMetadata`.
+
+### Combining Global and Specific Handlers
+
+Both global and specific handlers execute in parallel for the same event:
+
+```csharp
+// Specific handler - runs only for UserRegisteredEvent
+public class UserRegisteredEventHandler : IEventHandler<UserRegisteredEvent>
+{
+    public async Task HandleAsync(UserRegisteredEvent evt, CancellationToken ct)
+    {
+        // Business logic: create user profile, send welcome email, etc.
+    }
+}
+
+// Global handler - runs for ALL events with metadata (including UserRegisteredEvent)
+public class NotificationHandler : IEventHandler<EventWithMetadata>
+{
+    public async Task HandleAsync(EventWithMetadata evt, CancellationToken ct)
+    {
+        var metadata = evt.GetMetadata();
+        // Cross-cutting concern: create notification, log to analytics, etc.
+    }
+}
+```
+
+When `UserRegisteredEvent` is published, **both handlers execute in parallel**:
+- `UserRegisteredEventHandler` handles event-specific business logic
+
 
 #### 3. Implement Handlers
 Handlers are simple classes that implement the corresponding `I...Handler` interface. They will be automatically discovered by `AddEventSourcing`.
+
 
 ```csharp
 // Command Handler
