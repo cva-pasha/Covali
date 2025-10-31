@@ -98,6 +98,72 @@ public class UserRegisteredEvent : IEvent
 public record GetUserByIdQuery(string Id) : IQuery<User>;
 ```
 
+## Event Metadata
+
+Events can optionally provide rich metadata for cross-cutting concerns like notifications, analytics, and logging.
+
+### Basic Event (Lightweight)
+
+```csharp
+public record SimpleEvent : IEvent
+{
+    public string Data { get; init; }
+}
+```
+
+### Event with Metadata (Feature-Rich)
+
+```csharp
+public sealed record UserRegisteredEvent : EventWithMetadata
+{
+    // Event data
+    public required string UserId { get; init; }
+    public required string Email { get; init; }
+
+    // Metadata
+    public override EventMetadata GetMetadata() => new()
+    {
+        EventCode = "Identity.UserRegistered",
+        DisplayName = "User Registered",
+        Description = "New user registration",
+        Category = "Security",
+        PlaceholderKeys = ["UserId", "Email"]
+    };
+}
+```
+
+### Extending Metadata (Partial Classes)
+
+Modules can extend `EventMetadata` with domain-specific properties:
+
+```csharp
+// In your Notifications module
+namespace Covali.EventSourcing.Events;
+
+public partial class EventMetadata
+{
+    public string? NotificationChannel { get; init; }
+    public int Priority { get; init; }
+}
+```
+
+### Global Event Handlers
+
+Handle all metadata events with a single handler:
+
+```csharp
+public class NotificationHandler : IEventHandler<EventWithMetadata>
+{
+    public async Task HandleAsync(EventWithMetadata evt, CancellationToken ct)
+    {
+        var metadata = evt.GetMetadata();
+        // Send notification based on metadata
+    }
+}
+```
+
+This handler is automatically registered and called for ALL events inheriting from `EventWithMetadata`.
+
 #### 3. Implement Handlers
 Handlers are simple classes that implement the corresponding `I...Handler` interface. They will be automatically discovered by `AddEventSourcing`.
 
