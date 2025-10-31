@@ -126,7 +126,6 @@ public sealed record UserRegisteredEvent : EventWithMetadata
         EventCode = "Identity.UserRegistered",
         DisplayName = "User Registered",
         Description = "New user registration",
-        Category = "Security",
         PlaceholderKeys = ["UserId", "Email"]
     };
 }

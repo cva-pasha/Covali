@@ -30,7 +30,6 @@ namespace Covali.EventSourcing.Events;
 ///     EventCode = "Identity.UserRegistered",
 ///     DisplayName = "User Registered",
 ///     Description = "A new user has registered on the platform",
-///     Category = "Security",
 ///     PlaceholderKeys = ["UserId", "Email", "FirstName"]
 /// };
 /// </code>
@@ -92,30 +91,6 @@ public partial class EventMetadata
     /// </code>
     /// </example>
     public required string Description { get; init; }
-
-    /// <summary>
-    /// Event category for grouping, filtering, and organizational purposes.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Use domain-specific categories that make sense for your application.
-    /// Categories help organize events in logs, dashboards, and administrative tools.
-    /// </para>
-    /// <para>
-    /// <strong>Common Categories:</strong>
-    /// <list type="bullet">
-    ///   <item><description>Security - Authentication, authorization, access control</description></item>
-    ///   <item><description>Transaction - Financial operations, payments</description></item>
-    ///   <item><description>Inventory - Stock management, product updates</description></item>
-    ///   <item><description>User - User lifecycle events</description></item>
-    ///   <item><description>System - System-level operations, maintenance</description></item>
-    /// </list>
-    /// </para>
-    /// <para>
-    /// Modules can map these string categories to their own enums as needed.
-    /// </para>
-    /// </remarks>
-    public required string Category { get; init; }
 
     /// <summary>
     /// Available data fields that can be extracted from this event for templating,

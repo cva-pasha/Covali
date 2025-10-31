@@ -14,7 +14,6 @@ public class EventMetadataTests
             EventCode = "Test.EventOccurred",
             DisplayName = "Test Event",
             Description = "A test event for unit testing",
-            Category = "Testing",
             PlaceholderKeys = ["Key1", "Key2"]
         };
 
@@ -22,7 +21,6 @@ public class EventMetadataTests
         Assert.Equal("Test.EventOccurred", metadata.EventCode);
         Assert.Equal("Test Event", metadata.DisplayName);
         Assert.Equal("A test event for unit testing", metadata.Description);
-        Assert.Equal("Testing", metadata.Category);
         Assert.Contains("Key1", metadata.PlaceholderKeys);
         Assert.Contains("Key2", metadata.PlaceholderKeys);
     }
@@ -63,7 +61,6 @@ public class EventMetadataTests
             EventCode = "Test.EventOccurred",
             DisplayName = "Test Event Occurred",
             Description = "Test event for unit testing",
-            Category = "Testing",
             PlaceholderKeys = ["TestData"]
         };
     }

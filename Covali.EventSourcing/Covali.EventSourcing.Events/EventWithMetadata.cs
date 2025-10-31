@@ -57,7 +57,6 @@ namespace Covali.EventSourcing.Events;
 ///         EventCode = "Identity.UserRegistered",
 ///         DisplayName = "User Registered",
 ///         Description = "A new user has registered on the platform",
-///         Category = "Security",
 ///         PlaceholderKeys = ["UserId", "Email", "FirstName"]
 ///     };
 /// }
