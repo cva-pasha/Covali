@@ -16,7 +16,7 @@
 /// </para>
 /// <para>
 /// For events that need metadata for cross-cutting concerns, inherit from
-/// <see cref="EventWithMetadata"/> instead of implementing this interface directly.
+/// <c>EventWithMetadata&lt;TMetadata&gt;</c> instead of implementing this interface directly.
 /// </para>
 /// </remarks>
 public interface IEvent;
