@@ -61,12 +61,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // 1. Add EventSourcing and scan for handlers in the specified assemblies
-builder.Services.AddEventSourcing(typeof(Program)); 
+builder.Services.AddEventSourcing(typeof(Program));
 
 var app = builder.Build();
 
 // 2. Configure the EventSourcingContext
-app.Services.UseEventSourcing(); 
+app.Services.UseEventSourcing();
 
 // ... rest of the configuration
 ```
@@ -76,7 +76,7 @@ app.Services.UseEventSourcing();
 // In your application's domain layer
 
 // Command with no result
-public class RegisterUserCommand : ICommand 
+public class RegisterUserCommand : ICommand
 {
     public string UserName { get; set; }
     public string Email { get; set; }
@@ -89,7 +89,7 @@ public class GetUserTokenCommand : ICommand<string>
 }
 
 // Event
-public class UserRegisteredEvent : IEvent 
+public class UserRegisteredEvent : IEvent
 {
     public string UserId { get; set; }
 }
@@ -100,11 +100,11 @@ public record GetUserByIdQuery(string Id) : IQuery<User>;
 
 ## Event Metadata
 
-Events can optionally provide rich metadata for cross-cutting concerns like notifications, analytics, and logging.
-
-**Note**: `EventMetadata` is intentionally empty in the core package. You must extend it with a partial class to define your own metadata structure.
+Events can optionally provide rich metadata for cross-cutting concerns like notifications, analytics, and logging using a generic, interface-based approach.
 
 ### Basic Event (Lightweight)
+
+For simple events without metadata:
 
 ```csharp
 public record SimpleEvent : IEvent
@@ -113,30 +113,30 @@ public record SimpleEvent : IEvent
 }
 ```
 
-### Extending Metadata (Partial Classes)
+### Defining Your Metadata Structure
 
-First, extend `EventMetadata` with your own properties:
+**Step 1**: Create a metadata class or record implementing `IEventMetadata`:
 
 ```csharp
-// In your application or module
-namespace Covali.EventSourcing.Events;
-
-public partial class EventMetadata
+// Define your metadata structure
+public record EventMetadata : IEventMetadata
 {
     public required string EventCode { get; init; }
     public required string DisplayName { get; init; }
     public required string Description { get; init; }
     public required HashSet<string> PlaceholderKeys { get; init; }
+
+    // Optional: Add module-specific properties
+    public string? NotificationCategory { get; init; }
+    public int? Priority { get; init; }
 }
 ```
 
-Or use a different structure that fits your needs:
+Alternative structures are also possible:
 
 ```csharp
 // Alternative: enum-based approach
-namespace Covali.EventSourcing.Events;
-
-public partial class EventMetadata
+public record EventMetadata : IEventMetadata
 {
     public required EventTypeCode Code { get; init; }
     public required NotificationPriority Priority { get; init; }
@@ -146,42 +146,46 @@ public partial class EventMetadata
 
 ### Event with Metadata (Feature-Rich)
 
-Once you've defined your metadata structure, use it in events:
+**Step 2**: Use your metadata in events with the generic `EventWithMetadata<TMetadata>`:
 
 ```csharp
-public sealed record UserRegisteredEvent : EventWithMetadata
+public sealed class UserRegisteredEvent : EventWithMetadata<EventMetadata>
 {
     // Event data
     public required string UserId { get; init; }
     public required string Email { get; init; }
+    public required string FirstName { get; init; }
 
-    // Metadata implementation (based on your partial class definition)
+    // Metadata implementation
     public override EventMetadata GetMetadata() => new()
     {
         EventCode = "Identity.UserRegistered",
         DisplayName = "User Registered",
         Description = "New user registration",
-        PlaceholderKeys = ["UserId", "Email"]
+        PlaceholderKeys = ["UserId", "Email", "FirstName"],
+        NotificationCategory = "Security",
+        Priority = 2
     };
 }
 ```
 
 ### Global Event Handlers
 
-Handle all metadata events with a single handler:
+Handle all metadata events with a single handler using the generic base type:
 
 ```csharp
-public class NotificationHandler : IEventHandler<EventWithMetadata>
+public class NotificationHandler : IEventHandler<EventWithMetadata<EventMetadata>>
 {
-    public async Task HandleAsync(EventWithMetadata evt, CancellationToken ct)
+    public async Task HandleAsync(EventWithMetadata<EventMetadata> evt, CancellationToken ct)
     {
         var metadata = evt.GetMetadata();
-        // Send notification based on metadata
+        // Send notification using metadata properties
+        // Access: metadata.EventCode, metadata.Priority, metadata.NotificationCategory, etc.
     }
 }
 ```
 
-This handler is automatically registered and called for **ALL events** inheriting from `EventWithMetadata`.
+This handler is automatically registered and called for **ALL events** inheriting from `EventWithMetadata<EventMetadata>`.
 
 ### Combining Global and Specific Handlers
 
@@ -198,9 +202,9 @@ public class UserRegisteredEventHandler : IEventHandler<UserRegisteredEvent>
 }
 
 // Global handler - runs for ALL events with metadata (including UserRegisteredEvent)
-public class NotificationHandler : IEventHandler<EventWithMetadata>
+public class NotificationHandler : IEventHandler<EventWithMetadata<EventMetadata>>
 {
-    public async Task HandleAsync(EventWithMetadata evt, CancellationToken ct)
+    public async Task HandleAsync(EventWithMetadata<EventMetadata> evt, CancellationToken ct)
     {
         var metadata = evt.GetMetadata();
         // Cross-cutting concern: create notification, log to analytics, etc.
@@ -210,6 +214,17 @@ public class NotificationHandler : IEventHandler<EventWithMetadata>
 
 When `UserRegisteredEvent` is published, **both handlers execute in parallel**:
 - `UserRegisteredEventHandler` handles event-specific business logic
+- `NotificationHandler` handles cross-cutting concerns using metadata
+
+### Why Generic Metadata?
+
+The generic approach (`EventWithMetadata<TMetadata>`) provides several advantages:
+
+✅ **Type Safety**: Your metadata structure is strongly typed
+✅ **Flexibility**: Each module can define its own metadata structure
+✅ **No Assembly Boundaries**: Works across NuGet packages and projects
+✅ **IntelliSense Support**: Full IDE support for your metadata properties
+✅ **Multiple Metadata Types**: Different event categories can use different metadata structures
 
 
 #### 3. Implement Handlers
@@ -223,7 +238,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
     public async Task HandleAsync(RegisterUserCommand command, CancellationToken ct = default)
     {
         // ... logic to register a user
-        
+
         // Publish an event after the command is handled
         await new UserRegisteredEvent { UserId = "123" }.PublishAsync();
     }
@@ -273,7 +288,7 @@ public class UsersController : ControllerBase
         var user = await new GetUserByIdQuery(id).ExecuteAsync();
         return Ok(user);
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(string userId)
     {
@@ -291,9 +306,9 @@ For operations that don't need to block the calling thread, use the `Execute()` 
 public void SomeLongRunningProcess()
 {
     var command = new SomeLongRunningCommand();
-    
+
     // The method returns immediately
-    command.Execute(); 
+    command.Execute();
 }
 ```
 Any exceptions during fire-and-forget execution are automatically caught and logged.
