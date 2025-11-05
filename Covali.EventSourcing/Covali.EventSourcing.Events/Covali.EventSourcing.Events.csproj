@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>9.0.0</Version>
+        <Version>9.1.0</Version>
         <Title>Covali.EventSourcing.Events</Title>
         <Description>Simplifies implementation of event sourcing with efficient in-memory event bus, powerful command bus, built-in concurrency control, and easy extensibility.</Description>
 
