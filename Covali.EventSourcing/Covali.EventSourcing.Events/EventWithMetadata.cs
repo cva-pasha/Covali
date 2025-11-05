@@ -3,11 +3,11 @@ namespace Covali.EventSourcing.Events;
 /// <summary>
 /// Base class for events that provide rich metadata for cross-cutting concerns.
 /// </summary>
+/// <typeparam name="TMetadata">
+/// The metadata type implementing <see cref="IEventMetadata"/>.
+/// Define your own metadata structure by creating a class or record that implements IEventMetadata.
+/// </typeparam>
 /// <remarks>
-/// <para>
-/// <strong>Important:</strong> You must extend <see cref="EventMetadata"/> with a partial class
-/// before using this class. The core <c>EventMetadata</c> class is intentionally empty.
-/// </para>
 /// <para>
 /// <strong>When to Use:</strong>
 /// </para>
@@ -28,13 +28,13 @@ namespace Covali.EventSourcing.Events;
 /// <strong>Handler Registration:</strong>
 /// </para>
 /// <para>
-/// Handlers for <c>EventWithMetadata</c> can be registered globally to handle all events
-/// that inherit from this base class:
+/// Handlers for <c>EventWithMetadata&lt;TMetadata&gt;</c> can be registered globally to handle all events
+/// that inherit from this base class with a specific metadata type:
 /// </para>
 /// <code>
-/// public class NotificationEventHandler : IEventHandler&lt;EventWithMetadata&gt;
+/// public class NotificationEventHandler : IEventHandler&lt;EventWithMetadata&lt;EventMetadata&gt;&gt;
 /// {
-///     public async Task HandleAsync(EventWithMetadata evt, CancellationToken ct)
+///     public async Task HandleAsync(EventWithMetadata&lt;EventMetadata&gt; evt, CancellationToken ct)
 ///     {
 ///         var metadata = evt.GetMetadata();
 ///         // Process notification using metadata
@@ -42,53 +42,58 @@ namespace Covali.EventSourcing.Events;
 /// }
 /// </code>
 /// <para>
-/// This handler will be automatically called for ALL events inheriting from <c>EventWithMetadata</c>,
-/// alongside any specific handlers for the concrete event type.
+/// This handler will be automatically called for ALL events inheriting from
+/// <c>EventWithMetadata&lt;EventMetadata&gt;</c>, alongside any specific handlers for the concrete event type.
 /// </para>
 /// </remarks>
 /// <example>
-/// First, extend EventMetadata with your own structure:
+/// First, define your metadata structure:
 /// <code>
-/// namespace Covali.EventSourcing.Events;
-///
-/// public partial class EventMetadata
+/// public record EventMetadata : IEventMetadata
 /// {
 ///     public required string EventCode { get; init; }
 ///     public required string DisplayName { get; init; }
 ///     public required string Description { get; init; }
 ///     public required HashSet&lt;string&gt; PlaceholderKeys { get; init; }
+///
+///     // Optional: Add module-specific properties
+///     public string? NotificationCategory { get; init; }
+///     public int? Priority { get; init; }
 /// }
 /// </code>
 /// Then create events using your metadata:
 /// <code>
-/// public sealed record UserRegisteredEvent : EventWithMetadata
+/// public sealed class UserRegisteredEvent : EventWithMetadata&lt;EventMetadata&gt;
 /// {
 ///     // Event data
 ///     public required string UserId { get; init; }
 ///     public required string Email { get; init; }
 ///     public required string FirstName { get; init; }
 ///
-///     // Metadata implementation (uses your partial class definition)
+///     // Metadata implementation
 ///     public override EventMetadata GetMetadata() => new()
 ///     {
 ///         EventCode = "Identity.UserRegistered",
 ///         DisplayName = "User Registered",
 ///         Description = "A new user has registered on the platform",
-///         PlaceholderKeys = ["UserId", "Email", "FirstName"]
+///         PlaceholderKeys = ["UserId", "Email", "FirstName"],
+///         NotificationCategory = "Security",
+///         Priority = 2
 ///     };
 /// }
 /// </code>
 /// </example>
-public abstract class EventWithMetadata : IEvent
+public abstract class EventWithMetadata<TMetadata> : IEvent
+    where TMetadata : IEventMetadata
 {
     /// <summary>
     /// Gets the metadata for this event.
     /// </summary>
-    /// <returns>Event metadata containing properties defined in your partial class extension.</returns>
+    /// <returns>Event metadata of type <typeparamref name="TMetadata"/>.</returns>
     /// <remarks>
     /// <para>
     /// Override this method to provide event-specific metadata. The metadata structure
-    /// is determined by your partial class definition of <see cref="EventMetadata"/>.
+    /// is determined by your implementation of <see cref="IEventMetadata"/>.
     /// The metadata is used by:
     /// <list type="bullet">
     ///   <item><description>Event handlers to determine how to process the event</description></item>
@@ -103,5 +108,5 @@ public abstract class EventWithMetadata : IEvent
     /// Consider caching the result if metadata construction is expensive.
     /// </para>
     /// </remarks>
-    public abstract EventMetadata GetMetadata();
+    public abstract TMetadata GetMetadata();
 }
