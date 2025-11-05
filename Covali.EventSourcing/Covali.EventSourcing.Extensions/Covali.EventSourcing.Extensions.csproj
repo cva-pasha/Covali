@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>9.1.0</Version>
+        <Version>9.1.2</Version>
         <Title>Covali.EventSourcing.Extensions</Title>
         <Description>Simplifies implementation of event sourcing with efficient in-memory event bus, powerful command bus, built-in concurrency control, and easy extensibility.</Description>
 
@@ -34,9 +34,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Covali.EventSourcing.Commands" Version="9.0.0" />
-        <PackageReference Include="Covali.EventSourcing.Events" Version="9.1.0" />
-        <PackageReference Include="Covali.EventSourcing.Queries" Version="9.0.0" />
+        <PackageReference Include="Covali.EventSourcing.Commands" Version="9.0.1" />
+        <PackageReference Include="Covali.EventSourcing.Events" Version="9.1.2" />
+        <PackageReference Include="Covali.EventSourcing.Queries" Version="9.0.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
     </ItemGroup>
 
