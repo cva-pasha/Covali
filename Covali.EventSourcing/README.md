@@ -98,7 +98,7 @@ public class UserRegisteredEvent : IEvent
 public record GetUserByIdQuery(string Id) : IQuery<User>;
 ```
 
-## Event Metadata (v9.2.0+)
+## Event Metadata
 
 Events can optionally provide rich metadata for cross-cutting concerns like notifications, analytics, and logging using a generic, interface-based approach.
 
