@@ -16,6 +16,9 @@ internal sealed class FireAndForgetCommandHandler(
     )
     {
         await Task.Delay(millisecondsDelay: 2000, ct);
-        logger.LogInformation(message: "Background task for FireAndForgetCommand with number {Number} completed.", command.Number);
+        logger.LogInformation(
+            message: "Background task for FireAndForgetCommand with number {Number} completed.",
+            command.Number
+        );
     }
 }

@@ -83,7 +83,7 @@ public class CommandExtensionsTests
             await Assert.ThrowsAsync<System.Reflection.TargetInvocationException>(() =>
                 command.ExecuteAsync(serviceProvider)
             );
-        
+
         Assert.IsType<InvalidOperationException>(exception.InnerException);
         Assert.Equal(expected: "Handler failed", exception.InnerException!.Message);
     }
@@ -94,18 +94,18 @@ public class CommandExtensionsTests
         // Arrange
         var services = new ServiceCollection();
         var handler = new TestCommandHandler();
-        
+
         services.AddSingleton<ICommandHandler<TestCommand>>(handler);
-        
+
         var serviceProvider = services.BuildServiceProvider();
         var command = new TestCommand();
         var cts = new CancellationTokenSource();
-        
+
         await cts.CancelAsync();
 
         // Act & Assert
         await command.ExecuteAsync(serviceProvider, cts.Token);
-        
+
         // If cancellation is properly propagated, handler should still be called
         // since cancellation happens before execution
     }
@@ -325,7 +325,7 @@ public class CommandExtensionsTests
         // This is verified by the fact that both succeed
     }
 
-    #region [ Test Stubs ] 
+    #region [ Test Stubs ]
 
     private record TestCommand : ICommand;
 

@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <NoWarn>S4136;S2223</NoWarn>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <Version>9.0.1</Version>
         <Title>Covali.EventSourcing.Queries</Title>

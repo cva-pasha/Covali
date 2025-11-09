@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
-using Covali.EventSourcing.Tests.Unit.Events.Stubs;
 using Covali.EventSourcing.Events;
+using Covali.EventSourcing.Tests.Unit.Events.Stubs;
 
 namespace Covali.EventSourcing.Tests.Unit.Events;
 

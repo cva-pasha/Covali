@@ -28,10 +28,7 @@ app.UseHttpsRedirection();
 
 app.MapGet(
         pattern: "/commands/execute-and-wait-response",
-        async (CancellationToken ct) =>
-        {
-            return await new SampleCommand(1).ExecuteAsync(ct);
-        }
+        async (CancellationToken ct) => { return await new SampleCommand(1).ExecuteAsync(ct); }
     )
     .WithName("ExecuteCommandAsync")
     .WithOpenApi();
@@ -108,10 +105,7 @@ app.MapGet(
             Parallel.For(
                 fromInclusive: 0,
                 count,
-                _ =>
-                {
-                    new ConcurrentCommand(++number).Execute();
-                }
+                _ => { new ConcurrentCommand(++number).Execute(); }
             );
         }
     )
@@ -124,20 +118,14 @@ app.MapGet(
 
 app.MapGet(
         pattern: "/events/publish-and-wait-execution",
-        async () =>
-        {
-            await new SampleEvent(1).PublishAsync();
-        }
+        async () => { await new SampleEvent(1).PublishAsync(); }
     )
     .WithName("PublishEventAsync")
     .WithOpenApi();
 
 app.MapGet(
         pattern: "/events/publish-and-no-wait-execution",
-        () =>
-        {
-            new SampleEvent(1).Publish();
-        }
+        () => { new SampleEvent(1).Publish(); }
     )
     .WithName("PublishEvent")
     .WithOpenApi();

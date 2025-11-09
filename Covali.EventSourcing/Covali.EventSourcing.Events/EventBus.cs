@@ -13,7 +13,7 @@ public class EventBus : IEventBus
     public EventBus()
     {
         _handlers = new ConcurrentDictionary<string, List<object>>(
-            concurrencyLevel: Environment.ProcessorCount,
+            Environment.ProcessorCount,
             capacity: 100
         );
     }

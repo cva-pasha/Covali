@@ -12,7 +12,7 @@ public static class ConcurrentCommandExtensions
     private static ConcurrentCommandBus _bus = new();
 
     private static readonly ConcurrentDictionary<Type, Type> HandlerTypes = new(
-        concurrencyLevel: Environment.ProcessorCount,
+        Environment.ProcessorCount,
         capacity: 100
     );
 

@@ -1,6 +1,6 @@
-﻿using Covali.EventSourcing.Tests.Unit.Commands.Stubs;
-using Covali.EventSourcing.Commands;
+﻿using Covali.EventSourcing.Commands;
 using Covali.EventSourcing.Commands.Extensions;
+using Covali.EventSourcing.Tests.Unit.Commands.Stubs;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Covali.EventSourcing.Tests.Unit.Commands;

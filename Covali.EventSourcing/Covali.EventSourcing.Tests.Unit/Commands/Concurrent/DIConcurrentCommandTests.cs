@@ -1,6 +1,6 @@
-﻿using Covali.EventSourcing.Tests.Unit.Commands.Stubs;
-using Covali.EventSourcing.Commands.Concurrent;
+﻿using Covali.EventSourcing.Commands.Concurrent;
 using Covali.EventSourcing.Commands.Extensions;
+using Covali.EventSourcing.Tests.Unit.Commands.Stubs;
 
 namespace Covali.EventSourcing.Tests.Unit.Commands.Concurrent;
 

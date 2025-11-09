@@ -13,13 +13,13 @@ public static class CommandExtensions
     private const string MethodName = "HandleAsync";
 
     private static readonly ConcurrentDictionary<Type, Type> HandlerTypes = new(
-        concurrencyLevel: Environment.ProcessorCount,
+        Environment.ProcessorCount,
         capacity: 100
     );
 
     private static readonly ConcurrentDictionary<Tuple<Type, Type>, MethodInfo> HandlerMethods =
         new(
-            concurrencyLevel: Environment.ProcessorCount,
+            Environment.ProcessorCount,
             capacity: 100
         );
 

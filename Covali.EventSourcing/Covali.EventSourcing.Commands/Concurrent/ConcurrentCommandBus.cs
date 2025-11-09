@@ -8,13 +8,14 @@ namespace Covali.EventSourcing.Commands.Concurrent;
 public class ConcurrentCommandBus : IConcurrentCommandBus, IDisposable
 {
     private const string MethodName = "HandleAsync";
-    private readonly ConcurrentDictionary<string, ConcurrentHandler> _handlers;
 
     private static readonly ConcurrentDictionary<Tuple<Type, Type>, MethodInfo> HandlerMethods =
         new(
-            concurrencyLevel: Environment.ProcessorCount,
+            Environment.ProcessorCount,
             capacity: 100
         );
+
+    private readonly ConcurrentDictionary<string, ConcurrentHandler> _handlers;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="CommandBus" /> class.
@@ -22,7 +23,7 @@ public class ConcurrentCommandBus : IConcurrentCommandBus, IDisposable
     public ConcurrentCommandBus()
     {
         _handlers = new ConcurrentDictionary<string, ConcurrentHandler>(
-            concurrencyLevel: Environment.ProcessorCount,
+            Environment.ProcessorCount,
             capacity: 100
         );
     }
@@ -116,13 +117,24 @@ public class ConcurrentCommandBus : IConcurrentCommandBus, IDisposable
         {
             await concurrentHandler.Semaphore.WaitAsync(ct);
             MethodInfo method = GetHandlerMethod(handler, concurrentHandler.CommandType);
-            dynamic task = method.Invoke(handler, new object[] { command, ct });
+            var task = method.Invoke(handler, new object[] { command, ct });
             return await task;
         }
         finally
         {
             concurrentHandler.Semaphore.Release();
         }
+    }
+
+    public void Dispose()
+    {
+        foreach (var handler in _handlers.Values)
+        {
+            handler.Semaphore.Dispose();
+        }
+
+        _handlers.Clear();
+        GC.SuppressFinalize(this);
     }
 
     private static MethodInfo GetHandlerMethod(
@@ -148,16 +160,5 @@ public class ConcurrentCommandBus : IConcurrentCommandBus, IDisposable
 
         HandlerMethods.TryAdd(cacheKey, method);
         return method;
-    }
-
-    public void Dispose()
-    {
-        foreach (var handler in _handlers.Values)
-        {
-            handler.Semaphore.Dispose();
-        }
-
-        _handlers.Clear();
-        GC.SuppressFinalize(this);
     }
 }

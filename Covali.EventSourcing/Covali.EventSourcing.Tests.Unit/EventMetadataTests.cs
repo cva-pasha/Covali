@@ -1,20 +1,23 @@
 using Covali.EventSourcing.Events;
-using Xunit;
 
 namespace Covali.EventSourcing.Tests.Unit;
 
 public class EventMetadataTests
 {
     [Fact]
-    public void EventMetadata_CanBeExtendedWithPartialClass()
+    public void IEventMetadata_CanBeImplemented()
     {
         // Arrange & Act
-        // EventMetadata is empty by design, allowing developers to extend it
-        // This test verifies that EventMetadata can be instantiated
-        var metadata = new EventMetadata();
+        // IEventMetadata is a marker interface allowing developers to define custom metadata
+        // This test verifies that a custom metadata class can be instantiated
+        var metadata = new TestEventMetadata
+        {
+            TestProperty = "Test"
+        };
 
         // Assert
         Assert.NotNull(metadata);
+        Assert.Equal(expected: "Test", metadata.TestProperty);
     }
 
     [Fact]
@@ -31,6 +34,7 @@ public class EventMetadataTests
 
         // Assert
         Assert.NotNull(metadata);
+        Assert.Equal(expected: "Sample", metadata.TestProperty);
     }
 
     [Fact]
@@ -43,10 +47,35 @@ public class EventMetadataTests
         Assert.IsAssignableFrom<IEvent>(testEvent);
     }
 
-    private sealed class TestEvent : EventWithMetadata
+    [Fact]
+    public void EventWithMetadata_SupportsGenericMetadataType()
+    {
+        // Arrange
+        var testEvent = new TestEvent { TestData = "Sample" };
+
+        // Act
+        var metadata = testEvent.GetMetadata();
+
+        // Assert
+        Assert.IsType<TestEventMetadata>(metadata);
+        Assert.IsAssignableFrom<IEventMetadata>(metadata);
+    }
+
+    private record TestEventMetadata : IEventMetadata
+    {
+        public required string TestProperty { get; init; }
+    }
+
+    private sealed class TestEvent : EventWithMetadata<TestEventMetadata>
     {
         public required string TestData { get; init; }
 
-        public override EventMetadata GetMetadata() => new();
+        public override TestEventMetadata GetMetadata()
+        {
+            return new TestEventMetadata
+            {
+                TestProperty = TestData
+            };
+        }
     }
 }

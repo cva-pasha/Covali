@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
-using Covali.EventSourcing.Tests.Unit.Commands.Stubs;
 using Covali.EventSourcing.Commands.Concurrent;
 using Covali.EventSourcing.Commands.Concurrent.Internal;
 using Covali.EventSourcing.Commands.Extensions;
+using Covali.EventSourcing.Tests.Unit.Commands.Stubs;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Covali.EventSourcing.Tests.Unit.Commands.Concurrent;
