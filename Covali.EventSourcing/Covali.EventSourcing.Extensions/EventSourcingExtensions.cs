@@ -56,20 +56,29 @@ public static class EventSourcingExtensions
         return serviceProvider;
     }
 
+    public static IServiceCollection AddEventSourcing(
+        this IServiceCollection services,
+        ServiceLifetime lifetime,
+        params Type[] types
+    )
+    {
+        return AddEventSourcing(services, lifetime, types.Select(t => t.Assembly).ToArray());
+    }
+    
     /// <summary>
     /// Registers the Event Sourcing services and sets the ScopeFactory
     /// for the application's service provider.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to which the handlers will be added.</param>
     /// <param name="lifetime">The lifetime of the services.</param>
-    /// <param name="types">
-    /// An array of <see cref="Type" /> objects representing the types from whose
-    /// assemblies the handlers will be registered.
+    /// <param name="assemblies">
+    /// An array of <see cref="Assembly" /> objects representing the assemblies from which
+    /// the handlers will be registered.
     /// </param>
     public static IServiceCollection AddEventSourcing(
         this IServiceCollection services,
         ServiceLifetime lifetime,
-        params Type[] types
+        params Assembly[] assemblies
     )
     {
         services.AddSingleton<IEventBus, EventBus>();
@@ -90,8 +99,7 @@ public static class EventSourcingExtensions
             logger.LogDebug("Starting to register handlers.");
         }
 
-        var handlersTypes = types
-            .Select(t => t.Assembly)
+        var handlersTypes = assemblies
             .Distinct()
             .SelectMany(t => t.GetTypes())
             .Where(t => t is { IsInterface: false, IsAbstract: false })
